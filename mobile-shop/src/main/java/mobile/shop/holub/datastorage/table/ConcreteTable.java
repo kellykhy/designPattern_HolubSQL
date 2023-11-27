@@ -966,4 +966,38 @@ import java.util.Map;
             row[cell] = oldContents;
         }
     }
+
+    @Override
+    public String toJson() {
+        StringBuilder json = new StringBuilder();
+        json.append("{\n")
+                .append("\"tableName\": ")
+                .append("\"")
+                .append(tableName)
+                .append("\"")
+                .append(",\n")
+                .append("\"records\": ")
+                .append("[ \n");
+
+        for (int rowIdx = 0; rowIdx < rowSet.size(); rowIdx++) {
+            json.append("{\n");
+            Object[] row = (Object[]) rowSet.get(rowIdx);
+            for (int columnIdx = 0; columnIdx < row.length; columnIdx++) {
+                json.append("\"").append(columnNames[columnIdx]).append("\": ");
+                json.append("\"").append(row[columnIdx]).append("\"");
+                if (columnIdx != row.length - 1) {
+                    json.append(",\n");
+                }
+            }
+            json.append("\n}");
+            if (rowIdx != rowSet.size() - 1) {
+                json.append(",\n");
+            }
+        }
+
+        json.append("\n]");
+        json.append("\n}");
+
+        return json.toString();
+    }
 }
