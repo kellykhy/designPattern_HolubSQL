@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Iterator;
 import mobile.shop.holub.datastorage.importer.CSVImporter;
+import mobile.shop.holub.tools.FilePath;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +18,7 @@ public class CSVImporterTest {
 
     @BeforeEach
     void init() throws IOException {
-        Reader in = new FileReader("people");
+        Reader in = new FileReader(FilePath.resourceFilePath + "people");
         importer = new CSVImporter(in);
         importer.startTable();
     }

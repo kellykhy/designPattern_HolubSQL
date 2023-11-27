@@ -9,7 +9,6 @@ import mobile.shop.holub.sqlengine.text.ParseFailure;
 import mobile.shop.holub.tools.FilePath;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @RestController
@@ -22,7 +21,6 @@ public class RestaurantController {
 
         String test;
 
-        ObjectMapper objectMapper = new ObjectMapper();
         String jsonString = null;
         while ((test = sql.readLine()) != null) {
             test = test.trim();
@@ -37,16 +35,15 @@ public class RestaurantController {
 
             System.out.println("Parsing: " + test);
             Table result = database.execute(test);
-            jsonString = objectMapper.writeValueAsString(result);
-
+          
             if (result != null)    // it was a SELECT of some sort
             {
-                System.out.println(result.toString());
+                jsonString = result.toJson();
             }
         }
         database.dump();
 
         return jsonString;
-        
+
     }
 }
