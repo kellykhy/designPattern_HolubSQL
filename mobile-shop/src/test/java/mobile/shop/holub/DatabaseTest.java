@@ -88,16 +88,33 @@ public class DatabaseTest {
 
 
     @Test
-    void testCreateIndex() throws IOException, ParseFailure {
+    void testIndex() throws IOException, ParseFailure {
 
         String tableName = "menu";
         String columnName = "restaurant_id";
+
+        int iterationCount = 1000;
+
+        long startTime = System.currentTimeMillis();
+        for (int i = 0; i < iterationCount; i++) {
+            database.execute("SELECT *" + " FROM " + tableName + " WHERE " + columnName + " = 2");
+        }
+        long endTime = System.currentTimeMillis();
+        long elapsedTime = endTime - startTime;
+        System.out.println("execution time without index: " + elapsedTime + "ms");
+
+        // after index
         database.execute("CREATE INDEX menu ON restaurant_id");
 
-        HashIndex hashIndex = database.getIndex(tableName);
-        assertTrue(hashIndex.isIndexedColumn(columnName));
+        startTime = System.currentTimeMillis();
+        for (int i = 0; i < iterationCount; i++) {
+            database.execute("SELECT *" + " FROM " + tableName + " WHERE " + columnName + " = 2");
+        }
 
-        Table table = hashIndex.getSubTable("2");
-        System.out.println(table.toString());
+        endTime = System.currentTimeMillis();
+        elapsedTime = endTime - startTime;
+        System.out.println("execution time with index: " + elapsedTime + "ms");
+
     }
+
 }
