@@ -15,7 +15,7 @@ public class DatabaseTest {
         Database theDatabase = new Database();
 
         BufferedReader sql = new BufferedReader(
-                new FileReader(FilePath.resourceFilePath + "/Database.test.sql"));
+                new FileReader(FilePath.resourceFilePath + "Database.test.sql"));
 
         String test;
         while ((test = sql.readLine()) != null) {

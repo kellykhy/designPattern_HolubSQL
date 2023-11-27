@@ -80,18 +80,6 @@ public class ValueTest {
             ValueFactory.getIdValue(dummyTableName, dummyColumnName).getStringValue();
         });
     }
-
-    @Test
-    void t() {
-
-        File directory = new File(FilePath.resourceFilePath);
-        System.out.println(directory);
-        File[] filesAndDirs = directory.listFiles();
-
-        assert filesAndDirs != null;
-        for (File file : filesAndDirs) {
-            System.out.println(file.getName());
-        }
-    }
+    
 
 }

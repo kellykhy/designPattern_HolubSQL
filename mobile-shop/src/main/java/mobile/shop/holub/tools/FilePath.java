@@ -10,7 +10,7 @@ public class FilePath {
         String osName = System.getProperty("os.name").toLowerCase();
 
         if (osName.contains("mac")) {
-            resourceFilePath = System.getProperty("user.dir") + "/resources";
+            resourceFilePath = System.getProperty("user.dir") + "/resources/";
 //            System.out.println(resourceFilePath);
         }
         dbPath = getDBPath(resourceFilePath);

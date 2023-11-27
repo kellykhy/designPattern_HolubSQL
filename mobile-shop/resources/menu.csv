@@ -1,0 +1,100 @@
+menu
+id,	restaurant_id,	name,	type,	price
+0,	0,	Hawaiian Pizza,	PIZZA,	20000
+1,	2,	Pepperoni Pizza,	PIZZA,	18000
+2,	1,	Chicken Alfredo Pasta,	PASTA,	22000
+3,	3,	Caesar Salad,	SALAD,	12000
+4,	0,	Vegetarian Pizza,	PIZZA,	19000
+5,	1,	Spaghetti Bolognese,	PASTA,	21000
+6,	2,	Margarita Pizza,	PIZZA,	17000
+7,	3,	Shrimp Alfredo Pasta,	PASTA,	23000
+8,	0,	BBQ Chicken Pizza,	PIZZA,	21000
+9,	1,	Fettuccine Alfredo,	PASTA,	20000
+10,	2,	Greek Salad,	SALAD,	15000
+11,	3,	Meat Lovers Pizza,	PIZZA,	22000
+12,	0,	Penne alla Vodka,	PASTA,	19000
+13,	1,	Caprese Salad,	SALAD,	16000
+14,	2,	Buffalo Chicken Pizza,	PIZZA,	20000
+15,	3,	Seafood Alfredo,	PASTA,	24000
+16,	0,	Vegetable Pasta Primavera,	PASTA,	18000
+17,	1,	Spinach and Strawberry Salad,	SALAD,	14000
+18,	2,	Pesto Chicken Pizza,	PIZZA,	21000
+19,	3,	Lobster Ravioli,	PASTA,	25000
+20,	0,	Margherita Flatbread,	PIZZA,	16000
+21,	1,	Carbonara Pasta,	PASTA,	23000
+22,	2,	Cobb Salad,	SALAD,	17000
+23,	3,	Truffle Mushroom Pizza,	PIZZA,	22000
+24,	0,	Chicken Pesto Pasta,	PASTA,	20000
+25,	1,	Caesar Wrap,	SALAD,	13000
+26,	2,	Supreme Pizza,	PIZZA,	23000
+27,	3,	Lemon Garlic Shrimp Pasta,	PASTA,	24000
+28,	0,	Veggie Wrap,	SALAD,	15000
+29,	1,	Four Cheese Pizza,	PIZZA,	20000
+30,	2,	Chicken Caesar Salad,	SALAD,	16000
+31,	3,	Veggie Alfredo Pasta,	PASTA,	19000
+32,	0,	Bacon Ranch Pizza,	PIZZA,	22000
+33,	1,	Penne with Vodka Sauce,	PASTA,	21000
+34,	2,	Mediterranean Salad,	SALAD,	18000
+35,	3,	Pepperoni Calzone,	PIZZA,	19000
+36,	0,	Chicken Pesto Flatbread,	PIZZA,	17000
+37,	1,	Alfredo with Broccoli,	PASTA,	20000
+38,	2,	Antipasto Salad,	SALAD,	16000
+39,	3,	Tomato Basil Pizza,	PIZZA,	20000
+40,	0,	Shrimp Scampi Pasta,	PASTA,	24000
+41,	1,	Chicken Caesar Wrap,	SALAD,	14000
+42,	2,	Vegetable Calzone,	PIZZA,	19000
+43,	3,	Pesto Cavatappi,	PASTA,	18000
+44,	0,	Classic Garden Salad,	SALAD,	13000
+45,	1,	BBQ Bacon Pizza,	PIZZA,	21000
+46,	2,	Chicken Alfredo Flatbread,	PIZZA,	18000
+47,	3,	Shrimp Pesto Pasta,	PASTA,	23000
+48,	0,	Caesar Pizza,	PIZZA,	20000
+49,	1,	Vegetable Alfredo Pasta,	PASTA,	22000
+50,	2,	Greek Pita Wrap,	SALAD,	15000
+51,	3,	Buffalo Chicken Calzone,	PIZZA,	19000
+52,	0,	Mushroom and Onion Pizza,	PIZZA,	17000
+53,	1,	Chicken Bacon Ranch Pasta,	PASTA,	21000
+54,	2,	Cranberry Walnut Salad,	SALAD,	16000
+55,	3,	Artichoke and Spinach Pizza,	PIZZA,	22000
+56,	0,	Chicken Pesto Penne,	PASTA,	20000
+57,	1,	Caesar Wedge Salad,	SALAD,	14000
+58,	2,	Margherita Calzone,	PIZZA,	18000
+59,	3,	Lemon Herb Shrimp Pasta,	PASTA,	24000
+60,	0,	Pesto Pizza,	PIZZA,	19000
+61,	1,	Chicken and Broccoli Alfredo,	PASTA,	20000
+62,	2,	Asian Chicken Salad,	SALAD,	17000
+63,	3,	White Pizza,	PIZZA,	18000
+64,	0,	Shrimp and Scallop Scampi Pasta,	PASTA,	25000
+65,	1,	Italian Chop Salad,	SALAD,	16000
+66,	2,	Sausage and Mushroom Pizza,	PIZZA,	21000
+67,	3,	Chicken Pesto Linguine,	PASTA,	22000
+68,	0,	BBQ Ranch Chicken Pizza,	PIZZA,	20000
+69,	1,	Sun-Dried Tomato Pesto Pasta,	PASTA,	19000
+70,	2,	Caesar Pizza Wrap,	SALAD,	14000
+71,	3,	Margherita Pasta,	PASTA,	18000
+72,	0,	Buffalo Chicken Flatbread,	PIZZA,	17000
+73,	1,	Penne with Spinach and Feta,	PASTA,	20000
+74,	2,	Mango Avocado Salad,	SALAD,	15000
+75,	3,	Artichoke and Olive Pizza,	PIZZA,	21000
+76,	0,	Lobster and Shrimp Alfredo,	PASTA,	24000
+77,	1,	Caprese Pizza,	PIZZA,	19000
+78,	2,	Chicken Caesar Pita Wrap,	SALAD,	16000
+79,	3,	Pesto Chicken Penne,	PASTA,	22000
+80,	0,	Veggie Alfredo Pizza,	PIZZA,	20000
+81,	1,	Tomato Basil Linguine,	PASTA,	21000
+82,	2,	Mediterranean Pizza,	PIZZA,	18000
+83,	3,	Chicken Alfredo Gnocchi,	PASTA,	23000
+84,	0,	Spinach and Artichoke Flatbread,	PIZZA,	17000
+85,	1,	Creamy Pesto Tortellini,	PASTA,	24000
+86,	2,	Cajun Chicken Salad,	SALAD,	15000
+87,	3,	Margherita Calzone,	PIZZA,	18000
+88,	0,	Chicken Marsala Pasta,	PASTA,	22000
+89,	1,	Southwest BBQ Chicken Salad,	SALAD,	16000
+90,	2,	Veggie Supreme Pizza,	PIZZA,	20000
+91,	3,	Lemon Garlic Penne,	PASTA,	21000
+92,	0,	Prosciutto and Arugula Pizza,	PIZZA,	19000
+93,	1,	Cajun Shrimp Pasta,	PASTA,	23000
+94,	2,	Quinoa and Kale Salad,	SALAD,	14000
+95,	3,	Pesto Chicken Flatbread,	PIZZA,	18000
+96,	0,	Margherita Gnocchi,	PASTA,	20000
+97,	1,	BLT Salad Wrap,	SALAD,	15000
