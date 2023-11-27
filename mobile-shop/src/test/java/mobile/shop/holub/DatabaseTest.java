@@ -1,6 +1,9 @@
 package mobile.shop.holub;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -9,11 +12,36 @@ import mobile.shop.holub.datastorage.importer.CSVImporter;
 import mobile.shop.holub.datastorage.table.ConcreteTable;
 import mobile.shop.holub.datastorage.table.Table;
 import mobile.shop.holub.sqlengine.Database;
+import mobile.shop.holub.sqlengine.HashIndex;
 import mobile.shop.holub.sqlengine.text.ParseFailure;
 import mobile.shop.holub.tools.FilePath;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class DatabaseTest {
+    Database database;
+
+    @BeforeEach
+    void init() throws IOException, ParseFailure {
+
+        database = new Database();
+        BufferedReader sql = new BufferedReader(
+                new FileReader(FilePath.resourceFilePath + "createQuery.sql"));
+        String test;
+        while ((test = sql.readLine()) != null) {
+            test = test.trim();
+            if (test.isEmpty()) {
+                continue;
+            }
+
+            while (test.endsWith("\\")) {
+                test = test.substring(0, test.length() - 1);
+                test += sql.readLine().trim();
+            }
+        }
+
+    }
+
     @Test
     void test() throws IOException, ParseFailure {
         Database theDatabase = new Database();
@@ -60,12 +88,16 @@ public class DatabaseTest {
 
 
     @Test
-    void testToJson() throws IOException {
-        Reader in = new FileReader(FilePath.resourceFilePath + "menu.csv");
-        Table.Importer importer = new CSVImporter(in);
+    void testCreateIndex() throws IOException, ParseFailure {
 
-        Table table = new ConcreteTable(importer);
+        String tableName = "menu";
+        String columnName = "restaurant_id";
+        database.execute("CREATE INDEX menu ON restaurant_id");
 
-        System.out.println(table.toJson());
+        HashIndex hashIndex = database.getIndex(tableName);
+        assertTrue(hashIndex.isIndexedColumn(columnName));
+
+        Table table = hashIndex.getSubTable("2");
+        System.out.println(table.toString());
     }
 }

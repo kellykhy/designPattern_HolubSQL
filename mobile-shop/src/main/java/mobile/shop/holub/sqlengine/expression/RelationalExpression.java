@@ -1,7 +1,7 @@
 package mobile.shop.holub.sqlengine.expression;
 
 import mobile.shop.holub.datastorage.Cursor;
-import mobile.shop.holub.sqlengine.expression.enums.RelationalOperator;
+import mobile.shop.holub.sqlengine.enums.RelationalOperator;
 import mobile.shop.holub.sqlengine.expressionvisitor.Visitor;
 import mobile.shop.holub.sqlengine.text.ParseFailure;
 import mobile.shop.holub.sqlengine.value.BooleanValue;
@@ -10,7 +10,7 @@ import mobile.shop.holub.sqlengine.value.NumericValue;
 import mobile.shop.holub.sqlengine.value.StringValue;
 import mobile.shop.holub.sqlengine.value.Value;
 
-import static mobile.shop.holub.sqlengine.expression.enums.RelationalOperator.*;
+import static mobile.shop.holub.sqlengine.enums.RelationalOperator.*;
 
 public class RelationalExpression extends Expression {
 

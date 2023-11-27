@@ -1,13 +1,13 @@
 package mobile.shop.holub.sqlengine.expression;
 
 import mobile.shop.holub.datastorage.Cursor;
-import mobile.shop.holub.sqlengine.expression.enums.TokenType;
+import mobile.shop.holub.sqlengine.enums.TokenType;
 import mobile.shop.holub.sqlengine.expressionvisitor.Visitor;
 import mobile.shop.holub.sqlengine.text.ParseFailure;
 import mobile.shop.holub.sqlengine.value.BooleanValue;
 import mobile.shop.holub.sqlengine.value.Value;
 
-import static mobile.shop.holub.sqlengine.expression.enums.TokenType.*;
+import static mobile.shop.holub.sqlengine.enums.TokenType.*;
 
 public class LogicalExpression extends Expression {
 

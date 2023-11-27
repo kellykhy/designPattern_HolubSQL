@@ -27,10 +27,10 @@
 package mobile.shop.holub.sqlengine;
 
 
-import static mobile.shop.holub.sqlengine.expression.enums.MathOperator.*;
-import static mobile.shop.holub.sqlengine.expression.enums.RelationalOperator.*;
+import static mobile.shop.holub.sqlengine.enums.MathOperator.*;
+import static mobile.shop.holub.sqlengine.enums.RelationalOperator.*;
 
-import static mobile.shop.holub.sqlengine.expression.enums.TokenType.*;
+import static mobile.shop.holub.sqlengine.enums.TokenType.*;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -56,8 +56,8 @@ import mobile.shop.holub.datastorage.table.UnmodifiableTable;
 import mobile.shop.holub.sqlengine.expression.Expression;
 import mobile.shop.holub.sqlengine.expression.ExpressionFactory;
 
-import mobile.shop.holub.sqlengine.expression.enums.MathOperator;
-import mobile.shop.holub.sqlengine.expression.enums.RelationalOperator;
+import mobile.shop.holub.sqlengine.enums.MathOperator;
+import mobile.shop.holub.sqlengine.enums.RelationalOperator;
 import mobile.shop.holub.sqlengine.expressionvisitor.PrintVisitor;
 import mobile.shop.holub.sqlengine.expressionvisitor.Visitor;
 import mobile.shop.holub.sqlengine.text.ParseFailure;
@@ -70,6 +70,8 @@ import mobile.shop.holub.tools.ThrowableContainer;
 
 public final class Database {
 
+
+    private Map<String, HashIndex> indices = new HashMap<>();
 
     private final Map tables = new TableMap(new HashMap());
     private File location = new File(FilePath.resourceFilePath);
@@ -300,6 +302,13 @@ public final class Database {
             if (in.match(DATABASE)) {
                 in.advance();
                 createDatabase(in.required(IDENTIFIER));
+            } else if (in.match(INDEX)) {
+                in.advance();
+                String tableName = in.required(IDENTIFIER);
+                in.advance();
+                String column = in.required(IDENTIFIER);
+                createIndex(tableName, column);
+//                System.exit(0);
             } else // must be CREATE TABLE
             {
                 in.required(TABLE);
@@ -788,56 +797,24 @@ public final class Database {
         }
     }
 
-    //@workhorse-end
-    //--------------------------------------------------------------
 
-//    public static class Test {
-//        public static void main(String[] args) throws IOException, ParseFailure {
-//            Database theDatabase = new Database();
-//
-//            // Read a sequence of SQL statements in from the file
-//            // Database.test.sql and execute them.
-//
-//            BufferedReader sql = new BufferedReader(
-//                    new FileReader(FilePath.resourceFilePath + "/resources/Database.test.sql"));
-//
-//            String test;
-//            while ((test = sql.readLine()) != null) {
-//                test = test.trim();
-//                if (test.length() == 0) {
-//                    continue;
-//                }
-//
-//                while (test.endsWith("\\")) {
-//                    test = test.substring(0, test.length() - 1);
-//                    test += sql.readLine().trim();
-//                }
-//
-//                System.out.println("Parsing: " + test);
-//                Table result = theDatabase.execute(test);
-//
-//                if (result != null)    // it was a SELECT of some sort
-//                {
-//                    System.out.println(result.toString());
-//                }
-//            }
-//
-//            try {
-//                theDatabase.execute("insert garbage SQL");
-//                System.out.println("Database FAILED");
-//                System.exit(1);
-//            } catch (ParseFailure e) {
-//                System.out.println("Correctly found garbage SQL:\n"
-//                        + e + "\n"
-//                        + e.getErrorReport());
-//            }
-//
-//            theDatabase.dump();
-//
-//            System.out.println("Database PASSED");
-//            System.exit(0);
-//        }
-//    }
+    public HashIndex getIndex(String tableName) {
+        return indices.get(tableName);
+    }
+
+    public void createIndex(String tableName, String columnName) throws IOException, ParseFailure {
+        HashIndex hashIndex = new HashIndex(columnName);
+
+        Table indexedTable = (Table) tables.get(tableName);
+        Cursor cursor = indexedTable.rows();
+        while (cursor.advance()) {
+            Object value = cursor.column(columnName);
+            String query = "select * from " + tableName + " where " + columnName + " = " + value.toString();
+            Table subTable = execute(query);
+            hashIndex.addSubTable(value.toString(), subTable);
+        }
+        indices.put(tableName, hashIndex);
+    }
 
     /**
      * A Map proxy that hanldes lazy instatiation of tables from the disk.

@@ -1,4 +1,4 @@
-package mobile.shop.holub.sqlengine.expression.enums;
+package mobile.shop.holub.sqlengine.enums;
 
 public enum RelationalOperator {
     LE,
