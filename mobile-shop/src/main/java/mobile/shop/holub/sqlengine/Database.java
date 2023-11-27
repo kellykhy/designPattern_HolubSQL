@@ -147,10 +147,12 @@ public final class Database {
      *
      * @throws IOException if the named directory can't be opened.
      */
+
+    // 디렉터리 패스 변경하는 부분 제거
     public void createDatabase(String name) throws IOException {
-        File location = new File(name);
-        location.mkdir();
-        this.location = location;
+//        File location = new File(name);
+//        location.mkdir();
+//        this.location = location;
     }
 
     /**
@@ -197,7 +199,9 @@ public final class Database {
             for (Iterator i = values.iterator(); i.hasNext(); ) {
                 Table current = (Table) i.next();
                 if (current.isDirty()) {
-
+                    System.out.println("-----------------------------------------");
+                    System.out.println(location);
+                    System.out.println("-----------------------------------------");
                     Writer out =
                             new FileWriter(
                                     new File(location, current.name() + ".csv"));
