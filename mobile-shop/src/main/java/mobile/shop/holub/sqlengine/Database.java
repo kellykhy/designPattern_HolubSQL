@@ -58,8 +58,8 @@ import mobile.shop.holub.sqlengine.expression.ExpressionFactory;
 
 import mobile.shop.holub.sqlengine.enums.MathOperator;
 import mobile.shop.holub.sqlengine.enums.RelationalOperator;
-import mobile.shop.holub.sqlengine.expressionvisitor.PrintVisitor;
-import mobile.shop.holub.sqlengine.expressionvisitor.Visitor;
+import mobile.shop.holub.sqlengine.expressionvisitor.IndexCheckVisitor;
+
 import mobile.shop.holub.sqlengine.text.ParseFailure;
 import mobile.shop.holub.sqlengine.text.Scanner;
 import mobile.shop.holub.sqlengine.value.Value;
@@ -383,14 +383,18 @@ public final class Database {
             Expression where = (in.matchAdvance(WHERE) == null)
                     ? null : expr();
 
-            Visitor visitor = new PrintVisitor();
-            if (where != null) {
-                where.accept(visitor);
-            }
+//            Visitor visitor = new PrintVisitor();
+//            if (where != null) {
+//                where.accept(visitor);
+//            }
 
-            Table result = doSelect(columns, into,
-                    requestedTableNames, where);
-            return result;
+            Table result = applyIndex(requestedTableNames, where);
+
+            if (result != null) {
+                return result;
+            }
+            return doSelect(columns, into, requestedTableNames, where);
+
         } else {
             error("Expected insert, create, drop, use, "
                     + "update, delete or select");
@@ -802,7 +806,22 @@ public final class Database {
         return indices.get(tableName);
     }
 
-    public void createIndex(String tableName, String columnName) throws IOException, ParseFailure {
+    private Table applyIndex(List requestedTableNames, Expression where) {
+        if (requestedTableNames.size() == 1 && where != null) {
+
+            String tableName = (String) requestedTableNames.get(0);
+            if (indices.containsKey(tableName)) {
+
+                HashIndex hashIndex = indices.get(tableName);
+                IndexCheckVisitor visitor = new IndexCheckVisitor(hashIndex);
+                where.accept(visitor);
+                return visitor.getSubTable();
+            }
+        }
+        return null;
+    }
+
+    private void createIndex(String tableName, String columnName) throws IOException, ParseFailure {
         HashIndex hashIndex = new HashIndex(columnName);
 
         Table indexedTable = (Table) tables.get(tableName);
@@ -815,6 +834,7 @@ public final class Database {
         }
         indices.put(tableName, hashIndex);
     }
+
 
     /**
      * A Map proxy that hanldes lazy instatiation of tables from the disk.
