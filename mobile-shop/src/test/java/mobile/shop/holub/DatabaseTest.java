@@ -1,8 +1,12 @@
 package mobile.shop.holub;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
+import mobile.shop.holub.datastorage.importer.CSVImporter;
+import mobile.shop.holub.datastorage.table.ConcreteTable;
 import mobile.shop.holub.datastorage.table.Table;
 import mobile.shop.holub.sqlengine.Database;
 import mobile.shop.holub.sqlengine.text.ParseFailure;
@@ -52,5 +56,16 @@ public class DatabaseTest {
 
         System.out.println("Database PASSED");
         System.exit(0);
+    }
+
+
+    @Test
+    void testToJson() throws IOException {
+        Reader in = new FileReader(FilePath.resourceFilePath + "menu.csv");
+        Table.Importer importer = new CSVImporter(in);
+
+        Table table = new ConcreteTable(importer);
+
+        System.out.println(table.toJson());
     }
 }
