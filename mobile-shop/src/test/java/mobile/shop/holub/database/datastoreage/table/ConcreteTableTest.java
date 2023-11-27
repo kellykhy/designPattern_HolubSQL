@@ -1,4 +1,4 @@
-package mobile.shop.holub.database.datastorate.table;
+package mobile.shop.holub.database.datastoreage.table;
 
 import java.io.FileReader;
 import java.io.FileWriter;

@@ -1,17 +1,18 @@
-package com.test;
+package mobile.shop.holub.database.datastoreage.importer;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.holub.database.datastorate.importer.CSVImporter;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Iterator;
+import mobile.shop.holub.datastorage.importer.CSVImporter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class CSVImporterTest {
+
     CSVImporter importer;
 
     @BeforeEach
