@@ -11,7 +11,9 @@ import java.util.List;
 import mobile.shop.holub.datastorage.Cursor;
 import mobile.shop.holub.datastorage.Selector;
 import mobile.shop.holub.datastorage.exporter.CSVExporter;
+import mobile.shop.holub.datastorage.exporter.XMLExporter;
 import mobile.shop.holub.datastorage.importer.CSVImporter;
+import mobile.shop.holub.datastorage.importer.XMLImporter;
 import mobile.shop.holub.datastorage.table.ConcreteTable;
 import mobile.shop.holub.datastorage.table.Table;
 import mobile.shop.holub.datastorage.table.TableFactory;
@@ -195,13 +197,18 @@ class ConcreteTableTest {
         // "people" table will
         // fail if this operation fails.
 
+//        Writer out = new FileWriter(FilePath.resourceFilePath + "people");
+//        people.export(new CSVExporter(out));
+//        out.close();
+//
+//        Reader in = new FileReader(FilePath.resourceFilePath + "people");
+//        people = new ConcreteTable(new CSVImporter(in));
+//        in.close();
+
         Writer out = new FileWriter(FilePath.resourceFilePath + "people");
-        people.export(new CSVExporter(out));
+        people.export(new XMLExporter(out));
         out.close();
 
-        Reader in = new FileReader(FilePath.resourceFilePath + "people");
-        people = new ConcreteTable(new CSVImporter(in));
-        in.close();
     }
 
     public void testJoin() {

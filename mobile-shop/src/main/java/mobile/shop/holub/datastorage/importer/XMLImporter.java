@@ -1,102 +1,123 @@
+/*  (c) 2004 Allen I. Holub. All rights reserved.
+ *
+ *  This code may be used freely by yourself with the following
+ *  restrictions:
+ *
+ *  o Your splash screen, about box, or equivalent, must include
+ *    Allen Holub's name, copyright, and URL. For example:
+ *
+ *      This program contains Allen Holub's SQL package.<br>
+ *      (c) 2005 Allen I. Holub. All Rights Reserved.<br>
+ *              http://www.holub.com<br>
+ *
+ *    If your program does not run interactively, then the foregoing
+ *    notice must appear in your documentation.
+ *
+ *  o You may not redistribute (or mirror) the source code.
+ *
+ *  o You must report any bugs that you find to me. Use the form at
+ *    http://www.holub.com/company/contact.html or send email to
+ *    allen@Holub.com.
+ *
+ *  o The software is supplied <em>as is</em>. Neither Allen Holub nor
+ *    Holub Associates are responsible for any bugs (or any problems
+ *    caused by bugs, including lost productivity or data)
+ *    in any of this code.
+ */
 package mobile.shop.holub.datastorage.importer;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import mobile.shop.holub.datastorage.table.Table;
 import mobile.shop.holub.tools.ArrayIterator;
+import mobile.shop.holub.datastorage.table.Table;
 
-public class XMLImporter implements Table.Importer {
-    private XMLStreamReader reader;
-    private String tableName;
-    private List<String> columnNames;
+import java.io.*;
+import java.util.*;
 
-    public XMLImporter(Reader in) throws XMLStreamException {
-        XMLInputFactory factory = XMLInputFactory.newInstance();
-        reader = factory.createXMLStreamReader(in);
-    }
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
 
-    public void startTable() throws IOException {
-        try {
-            while (reader.hasNext()) {
-                int event = reader.next();
-                if (event == XMLStreamConstants.START_ELEMENT) {
-                    tableName = reader.getLocalName().trim();
-                    break;
-                }
-            }
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
-            while (reader.hasNext()) {
-                int event = reader.next();
-                if (event == XMLStreamConstants.START_ELEMENT) {
-                    if ("columns".equals(reader.getLocalName())) {
-                        columnNames = new ArrayList<>();
-                        while (reader.hasNext()) {
-                            int columnEvent = reader.next();
-                            if (columnEvent == XMLStreamConstants.START_ELEMENT) {
-                                columnNames.add(reader.getLocalName());
-                            } else if (columnEvent == XMLStreamConstants.END_ELEMENT
-                                    && "columns".equals(reader.getLocalName())) {
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
-        } catch (XMLStreamException e) {
-            throw new IOException(e);
+
+public class XMLImporter implements Table.Importer
+{	
+	private Reader in;
+	private Element root;
+	private int currentRow;
+
+	public XMLImporter( Reader in )
+	{	
+		this.in = in;
+        this.currentRow = -1;
+	}
+	public void startTable()			throws IOException
+	{	
+		try {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(new InputSource(in));
+            this.root = doc.getDocumentElement();
+        } catch(Exception e) {
+
         }
-    }
-
-    public String loadTableName() throws IOException {
-        return tableName;
-    }
-
-    public int loadWidth() throws IOException {
-        return columnNames.size();
-    }
-
-    public Iterator loadColumnNames() throws IOException {
-        return new ArrayIterator(columnNames.toArray(new String[0]));
-    }
-
-    public Iterator loadRow() throws IOException {
-        Iterator row = null;
-        try {
-            while (reader.hasNext()) {
-                int event = reader.next();
-                if (event == XMLStreamConstants.START_ELEMENT && "row".equals(reader.getLocalName())) {
-                    List<String> rowData = new ArrayList<>();
-                    while (reader.hasNext()) {
-                        int columnEvent = reader.next();
-                        if (columnEvent == XMLStreamConstants.START_ELEMENT) {
-                            rowData.add(reader.getElementText());
-                        } else if (columnEvent == XMLStreamConstants.END_ELEMENT
-                                && "row".equals(reader.getLocalName())) {
-                            row = new ArrayIterator(rowData.toArray(new String[0]));
-                            break;
-                        }
-                    }
-                }
+	}
+	public String loadTableName()		throws IOException
+	{	
+		return root.getTagName();
+	}
+	public int loadWidth()			    throws IOException
+	{	
+		int i = 0;
+        Iterator columnNames = loadColumnNames();
+        while(columnNames.hasNext()) {
+            i++;
+            columnNames.next();
+        }
+        return i;
+	}
+	public Iterator loadColumnNames()	throws IOException
+	{	
+		ArrayList columns = new ArrayList<String>();
+        for (int i = 0; i < root.getChildNodes().item(1).getChildNodes().getLength(); i++) {
+            Node node = root.getChildNodes().item(1).getChildNodes().item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element childElement = (Element) node;
+                String tagName = childElement.getTagName();
+                if(!tagName.trim().equals(""))
+                    columns.add(tagName);
             }
-        } catch (XMLStreamException e) {
-            throw new IOException(e);
         }
-        return row;
-    }
+        return new ArrayIterator(columns.toArray());
+	}
 
-    public void endTable() throws IOException {
-        try {
-            reader.close();
-        } catch (XMLStreamException e) {
-            throw new IOException(e);
+	public Iterator loadRow()			throws IOException
+	{	
+		currentRow += 1;
+        if (currentRow >= root.getChildNodes().getLength()-1) {
+            return null;
         }
-    }
+
+        Node rowNode = root.getChildNodes().item(currentRow);
+        while (rowNode.getNodeType() == Node.TEXT_NODE) {
+            currentRow += 1;
+            rowNode = rowNode.getNextSibling();
+            if (rowNode == null)
+                return null;
+        }
+
+        ArrayList row = new ArrayList<String>();
+        for(int i=0; i < rowNode.getChildNodes().getLength(); i++) {
+            Node node = rowNode.getChildNodes().item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element childElement = (Element) node;
+                String value = childElement.getTextContent();
+                row.add(value);
+            }
+        }
+        return new ArrayIterator(row.toArray());
+	}
+
+	public void endTable() throws IOException {}
 }
