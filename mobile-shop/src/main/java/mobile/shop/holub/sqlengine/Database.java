@@ -27,10 +27,59 @@
 package mobile.shop.holub.sqlengine;
 
 
-import static mobile.shop.holub.sqlengine.enums.MathOperator.*;
-import static mobile.shop.holub.sqlengine.enums.RelationalOperator.*;
-
-import static mobile.shop.holub.sqlengine.enums.TokenType.*;
+import static mobile.shop.holub.sqlengine.enums.MathOperator.DIVIDE;
+import static mobile.shop.holub.sqlengine.enums.MathOperator.MINUS;
+import static mobile.shop.holub.sqlengine.enums.MathOperator.PLUS;
+import static mobile.shop.holub.sqlengine.enums.MathOperator.TIMES;
+import static mobile.shop.holub.sqlengine.enums.RelationalOperator.EQ;
+import static mobile.shop.holub.sqlengine.enums.RelationalOperator.GE;
+import static mobile.shop.holub.sqlengine.enums.RelationalOperator.GT;
+import static mobile.shop.holub.sqlengine.enums.RelationalOperator.LE;
+import static mobile.shop.holub.sqlengine.enums.RelationalOperator.LT;
+import static mobile.shop.holub.sqlengine.enums.RelationalOperator.NE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.ADDITIVE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.AND;
+import static mobile.shop.holub.sqlengine.enums.TokenType.BEGIN;
+import static mobile.shop.holub.sqlengine.enums.TokenType.CHAR;
+import static mobile.shop.holub.sqlengine.enums.TokenType.COMMA;
+import static mobile.shop.holub.sqlengine.enums.TokenType.COMMIT;
+import static mobile.shop.holub.sqlengine.enums.TokenType.CREATE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.DATABASE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.DATE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.DELETE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.DOT;
+import static mobile.shop.holub.sqlengine.enums.TokenType.DROP;
+import static mobile.shop.holub.sqlengine.enums.TokenType.DUMP;
+import static mobile.shop.holub.sqlengine.enums.TokenType.EQUAL;
+import static mobile.shop.holub.sqlengine.enums.TokenType.FROM;
+import static mobile.shop.holub.sqlengine.enums.TokenType.IDENTIFIER;
+import static mobile.shop.holub.sqlengine.enums.TokenType.INDEX;
+import static mobile.shop.holub.sqlengine.enums.TokenType.INSERT;
+import static mobile.shop.holub.sqlengine.enums.TokenType.INTEGER;
+import static mobile.shop.holub.sqlengine.enums.TokenType.INTO;
+import static mobile.shop.holub.sqlengine.enums.TokenType.KEY;
+import static mobile.shop.holub.sqlengine.enums.TokenType.LIKE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.LP;
+import static mobile.shop.holub.sqlengine.enums.TokenType.NOT;
+import static mobile.shop.holub.sqlengine.enums.TokenType.NULL;
+import static mobile.shop.holub.sqlengine.enums.TokenType.NUMBER;
+import static mobile.shop.holub.sqlengine.enums.TokenType.NUMERIC;
+import static mobile.shop.holub.sqlengine.enums.TokenType.OR;
+import static mobile.shop.holub.sqlengine.enums.TokenType.PRIMARY;
+import static mobile.shop.holub.sqlengine.enums.TokenType.RELOP;
+import static mobile.shop.holub.sqlengine.enums.TokenType.ROLLBACK;
+import static mobile.shop.holub.sqlengine.enums.TokenType.RP;
+import static mobile.shop.holub.sqlengine.enums.TokenType.SELECT;
+import static mobile.shop.holub.sqlengine.enums.TokenType.SET;
+import static mobile.shop.holub.sqlengine.enums.TokenType.SLASH;
+import static mobile.shop.holub.sqlengine.enums.TokenType.STAR;
+import static mobile.shop.holub.sqlengine.enums.TokenType.STRING;
+import static mobile.shop.holub.sqlengine.enums.TokenType.TABLE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.UPDATE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.USE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.VALUES;
+import static mobile.shop.holub.sqlengine.enums.TokenType.WHERE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.WORK;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -45,7 +94,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
 import java.util.Set;
 import mobile.shop.holub.datastorage.Cursor;
 import mobile.shop.holub.datastorage.Selector;
@@ -53,13 +101,13 @@ import mobile.shop.holub.datastorage.exporter.CSVExporter;
 import mobile.shop.holub.datastorage.table.Table;
 import mobile.shop.holub.datastorage.table.TableFactory;
 import mobile.shop.holub.datastorage.table.UnmodifiableTable;
-import mobile.shop.holub.sqlengine.expression.Expression;
-import mobile.shop.holub.sqlengine.expression.ExpressionFactory;
-
 import mobile.shop.holub.sqlengine.enums.MathOperator;
 import mobile.shop.holub.sqlengine.enums.RelationalOperator;
+import mobile.shop.holub.sqlengine.expression.Expression;
+import mobile.shop.holub.sqlengine.expression.ExpressionFactory;
 import mobile.shop.holub.sqlengine.expressionvisitor.IndexCheckVisitor;
-
+import mobile.shop.holub.sqlengine.expressionvisitor.PrintVisitor;
+import mobile.shop.holub.sqlengine.expressionvisitor.Visitor;
 import mobile.shop.holub.sqlengine.text.ParseFailure;
 import mobile.shop.holub.sqlengine.text.Scanner;
 import mobile.shop.holub.sqlengine.value.Value;
@@ -383,10 +431,11 @@ public final class Database {
             Expression where = (in.matchAdvance(WHERE) == null)
                     ? null : expr();
 
-//            Visitor visitor = new PrintVisitor();
-//            if (where != null) {
-//                where.accept(visitor);
-//            }
+            Visitor visitor = new PrintVisitor();
+            if (where != null) {
+                where.accept(visitor);
+                System.out.println();
+            }
 
             Table result = applyIndex(requestedTableNames, where);
 
@@ -801,10 +850,6 @@ public final class Database {
         }
     }
 
-
-    public HashIndex getIndex(String tableName) {
-        return indices.get(tableName);
-    }
 
     private Table applyIndex(List requestedTableNames, Expression where) {
         if (requestedTableNames.size() == 1 && where != null) {
