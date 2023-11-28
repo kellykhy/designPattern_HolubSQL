@@ -53,8 +53,8 @@ public class XMLImporter implements Table.Importer
         this.currentRow = -1;
 	}
 	public void startTable()			throws IOException
-	{	
-		try {
+	{
+        try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(new InputSource(in));

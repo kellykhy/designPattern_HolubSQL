@@ -209,6 +209,10 @@ class ConcreteTableTest {
         people.export(new XMLExporter(out));
         out.close();
 
+        Reader in = new FileReader(FilePath.resourceFilePath + "people");
+        people = new ConcreteTable(new XMLImporter(in));
+        in.close();
+
     }
 
     public void testJoin() {

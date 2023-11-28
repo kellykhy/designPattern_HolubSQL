@@ -52,7 +52,7 @@ public class XMLExporter implements Table.Exporter
 	{	
 		this.width = width;
 		this.tableName = tableName;
-		out.write(tableName == null ? "<anonymous>" : tableName );
+		out.write(tableName == null ? "<anonymous>" : "<" + tableName + ">");
 		out.write("\n");
 		this.columnNames = new String[width];
         for (int i = 0; columnNames.hasNext(); i++) {
