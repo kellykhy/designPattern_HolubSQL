@@ -1,18 +1,15 @@
-package mobile.shop.holub;
+package mobile.shop.holub.sqlengine;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
+
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
-import mobile.shop.holub.datastorage.importer.CSVImporter;
-import mobile.shop.holub.datastorage.table.ConcreteTable;
+
 import mobile.shop.holub.datastorage.table.Table;
+import mobile.shop.holub.datastorage.table.UnmodifiableTable;
 import mobile.shop.holub.sqlengine.Database;
-import mobile.shop.holub.sqlengine.HashIndex;
 import mobile.shop.holub.sqlengine.text.ParseFailure;
 import mobile.shop.holub.tools.FilePath;
 import org.junit.jupiter.api.BeforeEach;
@@ -93,11 +90,15 @@ public class DatabaseTest {
         String tableName = "menu";
         String columnName = "restaurant_id";
 
-        int iterationCount = 1000;
+        int iterationCount = 1;
 
+        Table t1 = null;
+        Table t2 = null;
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < iterationCount; i++) {
-            database.execute("SELECT *" + " FROM " + tableName + " WHERE " + columnName + " = 2");
+            t1 = database.execute("SELECT *" + " FROM " + tableName + " WHERE " + columnName + " = 2");
+
+            System.out.println(t1);
         }
         long endTime = System.currentTimeMillis();
         long elapsedTime = endTime - startTime;
@@ -108,13 +109,16 @@ public class DatabaseTest {
 
         startTime = System.currentTimeMillis();
         for (int i = 0; i < iterationCount; i++) {
-            database.execute("SELECT *" + " FROM " + tableName + " WHERE " + columnName + " = 2");
+            t2 = database.execute("SELECT *" + " FROM " + tableName + " WHERE " + columnName + " = 2");
+
+            System.out.println(t2);
         }
 
         endTime = System.currentTimeMillis();
         elapsedTime = endTime - startTime;
         System.out.println("execution time with index: " + elapsedTime + "ms");
 
+        System.out.println(t1.equals(t2));
     }
 
 }

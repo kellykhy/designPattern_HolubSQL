@@ -167,4 +167,10 @@ public class UnmodifiableTable implements Table {
     public Table extract() {
         return wrapped;
     }
+
+    @Override
+    public boolean equals(Object object) {
+
+        return wrapped.equals(object);
+    }
 }
