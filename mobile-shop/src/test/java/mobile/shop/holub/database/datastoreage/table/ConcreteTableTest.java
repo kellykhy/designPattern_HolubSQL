@@ -1,4 +1,4 @@
-package mobile.shop.holub.database.datastorate.table;
+package mobile.shop.holub.database.datastoreage.table;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -322,4 +322,15 @@ class ConcreteTableTest {
             System.out.println("");
         }
     }
+
+    @Test
+    void testToJson() throws IOException {
+        Reader in = new FileReader(FilePath.resourceFilePath + "menu.csv");
+        Table.Importer importer = new CSVImporter(in);
+
+        Table table = new ConcreteTable(importer);
+
+        System.out.println(table.toJson());
+    }
+
 }

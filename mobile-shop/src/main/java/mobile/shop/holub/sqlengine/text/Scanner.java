@@ -30,7 +30,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import mobile.shop.holub.sqlengine.expression.enums.TokenType;
+import mobile.shop.holub.sqlengine.enums.TokenType;
 
 
 public class Scanner {

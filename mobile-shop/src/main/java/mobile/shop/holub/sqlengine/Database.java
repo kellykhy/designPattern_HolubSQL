@@ -27,10 +27,59 @@
 package mobile.shop.holub.sqlengine;
 
 
-import static mobile.shop.holub.sqlengine.expression.enums.MathOperator.*;
-import static mobile.shop.holub.sqlengine.expression.enums.RelationalOperator.*;
-
-import static mobile.shop.holub.sqlengine.expression.enums.TokenType.*;
+import static mobile.shop.holub.sqlengine.enums.MathOperator.DIVIDE;
+import static mobile.shop.holub.sqlengine.enums.MathOperator.MINUS;
+import static mobile.shop.holub.sqlengine.enums.MathOperator.PLUS;
+import static mobile.shop.holub.sqlengine.enums.MathOperator.TIMES;
+import static mobile.shop.holub.sqlengine.enums.RelationalOperator.EQ;
+import static mobile.shop.holub.sqlengine.enums.RelationalOperator.GE;
+import static mobile.shop.holub.sqlengine.enums.RelationalOperator.GT;
+import static mobile.shop.holub.sqlengine.enums.RelationalOperator.LE;
+import static mobile.shop.holub.sqlengine.enums.RelationalOperator.LT;
+import static mobile.shop.holub.sqlengine.enums.RelationalOperator.NE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.ADDITIVE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.AND;
+import static mobile.shop.holub.sqlengine.enums.TokenType.BEGIN;
+import static mobile.shop.holub.sqlengine.enums.TokenType.CHAR;
+import static mobile.shop.holub.sqlengine.enums.TokenType.COMMA;
+import static mobile.shop.holub.sqlengine.enums.TokenType.COMMIT;
+import static mobile.shop.holub.sqlengine.enums.TokenType.CREATE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.DATABASE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.DATE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.DELETE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.DOT;
+import static mobile.shop.holub.sqlengine.enums.TokenType.DROP;
+import static mobile.shop.holub.sqlengine.enums.TokenType.DUMP;
+import static mobile.shop.holub.sqlengine.enums.TokenType.EQUAL;
+import static mobile.shop.holub.sqlengine.enums.TokenType.FROM;
+import static mobile.shop.holub.sqlengine.enums.TokenType.IDENTIFIER;
+import static mobile.shop.holub.sqlengine.enums.TokenType.INDEX;
+import static mobile.shop.holub.sqlengine.enums.TokenType.INSERT;
+import static mobile.shop.holub.sqlengine.enums.TokenType.INTEGER;
+import static mobile.shop.holub.sqlengine.enums.TokenType.INTO;
+import static mobile.shop.holub.sqlengine.enums.TokenType.KEY;
+import static mobile.shop.holub.sqlengine.enums.TokenType.LIKE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.LP;
+import static mobile.shop.holub.sqlengine.enums.TokenType.NOT;
+import static mobile.shop.holub.sqlengine.enums.TokenType.NULL;
+import static mobile.shop.holub.sqlengine.enums.TokenType.NUMBER;
+import static mobile.shop.holub.sqlengine.enums.TokenType.NUMERIC;
+import static mobile.shop.holub.sqlengine.enums.TokenType.OR;
+import static mobile.shop.holub.sqlengine.enums.TokenType.PRIMARY;
+import static mobile.shop.holub.sqlengine.enums.TokenType.RELOP;
+import static mobile.shop.holub.sqlengine.enums.TokenType.ROLLBACK;
+import static mobile.shop.holub.sqlengine.enums.TokenType.RP;
+import static mobile.shop.holub.sqlengine.enums.TokenType.SELECT;
+import static mobile.shop.holub.sqlengine.enums.TokenType.SET;
+import static mobile.shop.holub.sqlengine.enums.TokenType.SLASH;
+import static mobile.shop.holub.sqlengine.enums.TokenType.STAR;
+import static mobile.shop.holub.sqlengine.enums.TokenType.STRING;
+import static mobile.shop.holub.sqlengine.enums.TokenType.TABLE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.UPDATE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.USE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.VALUES;
+import static mobile.shop.holub.sqlengine.enums.TokenType.WHERE;
+import static mobile.shop.holub.sqlengine.enums.TokenType.WORK;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -40,12 +89,12 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
 import java.util.Set;
 import mobile.shop.holub.datastorage.Cursor;
 import mobile.shop.holub.datastorage.Selector;
@@ -53,13 +102,11 @@ import mobile.shop.holub.datastorage.exporter.CSVExporter;
 import mobile.shop.holub.datastorage.table.Table;
 import mobile.shop.holub.datastorage.table.TableFactory;
 import mobile.shop.holub.datastorage.table.UnmodifiableTable;
+import mobile.shop.holub.sqlengine.enums.MathOperator;
+import mobile.shop.holub.sqlengine.enums.RelationalOperator;
 import mobile.shop.holub.sqlengine.expression.Expression;
 import mobile.shop.holub.sqlengine.expression.ExpressionFactory;
-
-import mobile.shop.holub.sqlengine.expression.enums.MathOperator;
-import mobile.shop.holub.sqlengine.expression.enums.RelationalOperator;
-import mobile.shop.holub.sqlengine.expressionvisitor.PrintVisitor;
-import mobile.shop.holub.sqlengine.expressionvisitor.Visitor;
+import mobile.shop.holub.sqlengine.expressionvisitor.IndexCheckVisitor;
 import mobile.shop.holub.sqlengine.text.ParseFailure;
 import mobile.shop.holub.sqlengine.text.Scanner;
 import mobile.shop.holub.sqlengine.value.Value;
@@ -69,7 +116,7 @@ import mobile.shop.holub.tools.ThrowableContainer;
 
 
 public final class Database {
-
+    private final Map<String, HashIndex> indices = new HashMap<>();
 
     private final Map tables = new TableMap(new HashMap());
     private File location = new File(FilePath.resourceFilePath);
@@ -300,8 +347,13 @@ public final class Database {
             if (in.match(DATABASE)) {
                 in.advance();
                 createDatabase(in.required(IDENTIFIER));
-            } else // must be CREATE TABLE
-            {
+            } else if (in.match(INDEX)) {
+                in.advance();
+                String tableName = in.required(IDENTIFIER);
+                in.advance();
+                String column = in.required(IDENTIFIER);
+                createIndex(tableName, column);
+            } else {
                 in.required(TABLE);
                 String tableName = in.required(IDENTIFIER);
                 in.required(LP);
@@ -374,14 +426,19 @@ public final class Database {
             Expression where = (in.matchAdvance(WHERE) == null)
                     ? null : expr();
 
-            Visitor visitor = new PrintVisitor();
-            if (where != null) {
-                where.accept(visitor);
-            }
+//            Visitor visitor = new PrintVisitor();
+//            if (where != null) {
+//                where.accept(visitor);
+//                System.out.println();
+//            }
 
-            Table result = doSelect(columns, into,
-                    requestedTableNames, where);
-            return result;
+            Table result = applyIndex(requestedTableNames, where);
+
+            if (result != null) {
+                return result;
+            }
+            return doSelect(columns, into, requestedTableNames, where);
+
         } else {
             error("Expected insert, create, drop, use, "
                     + "update, delete or select");
@@ -642,6 +699,20 @@ public final class Database {
 
         assert tableNames.hasNext() : "No tables to use in select!";
 
+        if (columns == null) {
+            columns = new ArrayList<String>();
+            for (Object requestedTableName : requestedTableNames) {
+                String tableName = (String) requestedTableName;
+                Table table = (Table) tables.get(tableName);
+                Cursor cursor = table.rows();
+
+                for (int i = 0; i < cursor.columnCount(); i++) {
+                    columns.add(cursor.columnName(i));
+                }
+
+            }
+        }
+
         // The primary table is the first one listed in the
         // FROM clause. The participantsInJoin are the other
         // tables listed in the FROM clause. We're passed in the
@@ -788,56 +859,46 @@ public final class Database {
         }
     }
 
-    //@workhorse-end
-    //--------------------------------------------------------------
 
-//    public static class Test {
-//        public static void main(String[] args) throws IOException, ParseFailure {
-//            Database theDatabase = new Database();
-//
-//            // Read a sequence of SQL statements in from the file
-//            // Database.test.sql and execute them.
-//
-//            BufferedReader sql = new BufferedReader(
-//                    new FileReader(FilePath.resourceFilePath + "/resources/Database.test.sql"));
-//
-//            String test;
-//            while ((test = sql.readLine()) != null) {
-//                test = test.trim();
-//                if (test.length() == 0) {
-//                    continue;
-//                }
-//
-//                while (test.endsWith("\\")) {
-//                    test = test.substring(0, test.length() - 1);
-//                    test += sql.readLine().trim();
-//                }
-//
-//                System.out.println("Parsing: " + test);
-//                Table result = theDatabase.execute(test);
-//
-//                if (result != null)    // it was a SELECT of some sort
-//                {
-//                    System.out.println(result.toString());
-//                }
-//            }
-//
-//            try {
-//                theDatabase.execute("insert garbage SQL");
-//                System.out.println("Database FAILED");
-//                System.exit(1);
-//            } catch (ParseFailure e) {
-//                System.out.println("Correctly found garbage SQL:\n"
-//                        + e + "\n"
-//                        + e.getErrorReport());
-//            }
-//
-//            theDatabase.dump();
-//
-//            System.out.println("Database PASSED");
-//            System.exit(0);
-//        }
-//    }
+    private Table applyIndex(List requestedTableNames, Expression where) {
+        if (requestedTableNames.size() == 1 && where != null) {
+
+            String tableName = (String) requestedTableNames.get(0);
+            if (indices.containsKey(tableName)) {
+
+                HashIndex hashIndex = indices.get(tableName);
+                IndexCheckVisitor visitor = new IndexCheckVisitor(hashIndex);
+                where.accept(visitor);
+                return visitor.getSubTable();
+            }
+        }
+        return null;
+    }
+
+
+    private void createIndex(String tableName, String columnName)
+            throws IOException, ParseFailure {
+
+        Table indexedTable = (Table) tables.get(tableName);
+        Cursor cursor = indexedTable.rows();
+
+        HashIndex hashIndex = new HashIndex(columnName);
+        Set<String> indexedValues = new HashSet<>();
+        while (cursor.advance()) {
+            String value = cursor.column(columnName).toString();
+
+            if (!indexedValues.contains(value)) {
+                String query = "select * from "
+                        + tableName + " where "
+                        + columnName + " = " + value;
+                Table subTable = execute(query);
+                hashIndex.addSubTable(value, subTable);
+                indexedValues.add(value);
+            }
+        }
+        indices.put(tableName, hashIndex);
+    }
+
 
     /**
      * A Map proxy that hanldes lazy instatiation of tables from the disk.

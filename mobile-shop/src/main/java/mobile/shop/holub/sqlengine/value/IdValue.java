@@ -73,4 +73,8 @@ public class IdValue extends Value {
         }
         return tableName + "::" + columnName;
     }
+
+    public String getColumnName() {
+        return columnName;
+    }
 }

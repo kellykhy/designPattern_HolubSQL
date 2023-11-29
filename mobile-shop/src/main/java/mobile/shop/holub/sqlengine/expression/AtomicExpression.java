@@ -38,4 +38,11 @@ public class AtomicExpression extends Expression {
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }
+
+    public String getColumnName() {
+        if (atom instanceof IdValue) {
+            return ((IdValue) atom).getColumnName();
+        }
+        return null;
+    }
 }
