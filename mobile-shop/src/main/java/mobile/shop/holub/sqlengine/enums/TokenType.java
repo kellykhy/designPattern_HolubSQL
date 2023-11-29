@@ -17,7 +17,6 @@ public enum TokenType {
     CREATE(Token.create("'CREATE")),
     DATABASE(Token.create("'DATABASE")),
     INDEX(Token.create("'INDEX")),
-    ON(Token.create("'ON")),
     DELETE(Token.create("'DELETE")),
     DROP(Token.create("'DROP")),
     DUMP(Token.create("'DUMP")),

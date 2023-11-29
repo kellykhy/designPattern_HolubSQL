@@ -1,15 +1,11 @@
 package mobile.shop.holub.sqlengine;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.BufferedReader;
-
 import java.io.FileReader;
 import java.io.IOException;
-
 import mobile.shop.holub.datastorage.table.Table;
-import mobile.shop.holub.datastorage.table.UnmodifiableTable;
-import mobile.shop.holub.sqlengine.Database;
 import mobile.shop.holub.sqlengine.text.ParseFailure;
 import mobile.shop.holub.tools.FilePath;
 import org.junit.jupiter.api.BeforeEach;
@@ -86,19 +82,16 @@ public class DatabaseTest {
 
     @Test
     void testIndex() throws IOException, ParseFailure {
-
         String tableName = "menu";
         String columnName = "restaurant_id";
 
-        int iterationCount = 1;
-
+        int iterationCount = 1000;
+        String query = "SELECT *" + " FROM " + tableName + " WHERE " + columnName + " = 2";
         Table t1 = null;
         Table t2 = null;
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < iterationCount; i++) {
-            t1 = database.execute("SELECT *" + " FROM " + tableName + " WHERE " + columnName + " = 2");
-
-            System.out.println(t1);
+            t1 = database.execute(query);
         }
         long endTime = System.currentTimeMillis();
         long elapsedTime = endTime - startTime;
@@ -109,16 +102,15 @@ public class DatabaseTest {
 
         startTime = System.currentTimeMillis();
         for (int i = 0; i < iterationCount; i++) {
-            t2 = database.execute("SELECT *" + " FROM " + tableName + " WHERE " + columnName + " = 2");
-
-            System.out.println(t2);
+            t2 = database.execute(query);
         }
 
         endTime = System.currentTimeMillis();
         elapsedTime = endTime - startTime;
         System.out.println("execution time with index: " + elapsedTime + "ms");
 
-        System.out.println(t1.equals(t2));
+        assertEquals(t1, t2);
     }
+
 
 }

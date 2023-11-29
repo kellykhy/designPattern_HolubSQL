@@ -41,7 +41,7 @@ public class AtomicExpression extends Expression {
 
     public String getColumnName() {
         if (atom instanceof IdValue) {
-            return atom.toString();
+            return ((IdValue) atom).getColumnName();
         }
         return null;
     }

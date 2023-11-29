@@ -2,12 +2,11 @@ package mobile.shop.holub.sqlengine;
 
 import java.util.HashMap;
 import java.util.Map;
-import mobile.shop.holub.datastorage.Cursor;
 import mobile.shop.holub.datastorage.table.Table;
 
 public class HashIndex {
-    private String indexedColumn;
-    private Map<String, Table> index;
+    private final String indexedColumn;
+    private final Map<String, Table> index;
 
     public HashIndex(String indexedColumn) {
         index = new HashMap<>();

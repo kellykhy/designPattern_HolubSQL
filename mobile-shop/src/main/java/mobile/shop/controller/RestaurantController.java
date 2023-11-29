@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class RestaurantController {
-    @GetMapping("/tables")
-    public String hello() throws IOException, ParseFailure {
-        Database database = new Database();
+    Database database = new Database();
+
+    @GetMapping("/restaurants")
+    public String getRestaurant() throws IOException, ParseFailure {
+
         BufferedReader sql = new BufferedReader(
                 new FileReader(FilePath.resourceFilePath + "createQuery.sql"));
 
@@ -24,7 +26,7 @@ public class RestaurantController {
         String jsonString = null;
         while ((test = sql.readLine()) != null) {
             test = test.trim();
-            if (test.length() == 0) {
+            if (test.isEmpty()) {
                 continue;
             }
 
@@ -35,7 +37,7 @@ public class RestaurantController {
 
             System.out.println("Parsing: " + test);
             Table result = database.execute(test);
-          
+
             if (result != null)    // it was a SELECT of some sort
             {
                 jsonString = result.toJson();
