@@ -10,18 +10,23 @@ import mobile.shop.holub.tools.FilePath;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
 public class RestaurantController {
-    @GetMapping("/tables")
-    public String hello() throws IOException, ParseFailure {
-        Database database = new Database();
+    Database database = new Database();
+
+    @GetMapping("/restaurants")
+    public String getRestaurant() throws IOException, ParseFailure {
+
         BufferedReader sql = new BufferedReader(
-                new FileReader(FilePath.resourceFilePath + "/createQuery.sql"));
+                new FileReader(FilePath.resourceFilePath + "createQuery.sql"));
 
         String test;
+
+        String jsonString = null;
         while ((test = sql.readLine()) != null) {
             test = test.trim();
-            if (test.length() == 0) {
+            if (test.isEmpty()) {
                 continue;
             }
 
@@ -35,9 +40,12 @@ public class RestaurantController {
 
             if (result != null)    // it was a SELECT of some sort
             {
-                System.out.println(result.toString());
+                jsonString = result.toJson();
             }
         }
-        return "Hello, Spring!";
+        database.dump();
+
+        return jsonString;
+
     }
 }

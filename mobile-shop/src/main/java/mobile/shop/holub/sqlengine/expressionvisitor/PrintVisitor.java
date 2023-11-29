@@ -11,7 +11,6 @@ import mobile.shop.holub.sqlengine.expression.RelationalExpression;
 public class PrintVisitor implements Visitor {
 
     public void visit(ArithmeticExpression arithmeticExpression) {
-
         arithmeticExpression.printVisit(this);
     }
 
@@ -20,17 +19,14 @@ public class PrintVisitor implements Visitor {
     }
 
     public void visit(LikeExpression likeExpression) {
-
         likeExpression.printVisit(this);
     }
 
     public void visit(LogicalExpression logicalExpression) {
-
         logicalExpression.printVisit(this);
     }
 
     public void visit(NotExpression notExpression) {
-
         notExpression.printVisit(this);
     }
 
@@ -38,3 +34,6 @@ public class PrintVisitor implements Visitor {
         relationalExpression.printVisit(this);
     }
 }
+
+
+

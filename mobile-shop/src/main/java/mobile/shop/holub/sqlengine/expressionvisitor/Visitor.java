@@ -8,7 +8,6 @@ import mobile.shop.holub.sqlengine.expression.NotExpression;
 import mobile.shop.holub.sqlengine.expression.RelationalExpression;
 
 public interface Visitor {
-
     public void visit(ArithmeticExpression arithmeticExpression);
 
     public void visit(AtomicExpression atomicExpression);

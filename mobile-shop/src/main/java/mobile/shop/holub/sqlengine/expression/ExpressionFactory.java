@@ -1,9 +1,9 @@
 package mobile.shop.holub.sqlengine.expression;
 
 import java.util.Map;
-import mobile.shop.holub.sqlengine.expression.enums.MathOperator;
-import mobile.shop.holub.sqlengine.expression.enums.RelationalOperator;
-import mobile.shop.holub.sqlengine.expression.enums.TokenType;
+import mobile.shop.holub.sqlengine.enums.MathOperator;
+import mobile.shop.holub.sqlengine.enums.RelationalOperator;
+import mobile.shop.holub.sqlengine.enums.TokenType;
 import mobile.shop.holub.sqlengine.value.Value;
 
 public class ExpressionFactory {

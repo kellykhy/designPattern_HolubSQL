@@ -138,6 +138,11 @@ public class UnmodifiableTable implements Table {
         wrapped.export(exporter);
     }
 
+    @Override
+    public String toJson() {
+        return wrapped.toJson();
+    }
+
     public String toString() {
         return wrapped.toString();
     }
@@ -161,5 +166,11 @@ public class UnmodifiableTable implements Table {
      */
     public Table extract() {
         return wrapped;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+
+        return wrapped.equals(object);
     }
 }

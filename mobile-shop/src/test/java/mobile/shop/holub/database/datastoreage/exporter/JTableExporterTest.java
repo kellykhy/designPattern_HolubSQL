@@ -1,4 +1,4 @@
-package mobile.shop.holub.database.datastorate.exporter;
+package mobile.shop.holub.database.datastoreage.exporter;
 
 import java.io.IOException;
 import javax.swing.JFrame;
