@@ -1,23 +1,19 @@
 package mobile.shop.holub.sqlengine.expressionvisitor;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import mobile.shop.holub.sqlengine.Database;
 import mobile.shop.holub.sqlengine.text.ParseFailure;
 import mobile.shop.holub.tools.FilePath;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class PrintVisitorTest {
-    private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
     Database database;
 
     @BeforeEach
     public void setUp() throws IOException {
-//        System.setOut(new PrintStream(outputStreamCaptor));
         database = new Database();
         BufferedReader sql = new BufferedReader(
                 new FileReader(FilePath.resourceFilePath + "createQuery.sql"));
@@ -35,11 +31,6 @@ class PrintVisitorTest {
         }
     }
 
-    @AfterEach
-    public void tearDown() {
-        System.setOut(System.out);
-    }
-
     @Test
     void testPrintVisitorOutput() throws IOException, ParseFailure {
 
@@ -54,7 +45,5 @@ class PrintVisitorTest {
         database.execute("SELECT * FROM menu WHERE id = 5 OR price <= 10");
         database.execute("SELECT * FROM menu WHERE NOT (id = 5 AND type = 'Beverage')");
         database.execute("SELECT * FROM menu WHERE name LIKE 'Cheese%'");
-
-
     }
 }
