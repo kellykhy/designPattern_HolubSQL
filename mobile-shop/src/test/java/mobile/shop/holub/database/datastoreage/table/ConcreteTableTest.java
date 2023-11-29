@@ -11,6 +11,7 @@ import java.util.List;
 import mobile.shop.holub.datastorage.Cursor;
 import mobile.shop.holub.datastorage.Selector;
 import mobile.shop.holub.datastorage.exporter.CSVExporter;
+import mobile.shop.holub.datastorage.exporter.HTMLExporter;
 import mobile.shop.holub.datastorage.exporter.XMLExporter;
 import mobile.shop.holub.datastorage.importer.CSVImporter;
 import mobile.shop.holub.datastorage.importer.XMLImporter;
@@ -205,13 +206,19 @@ class ConcreteTableTest {
 //        people = new ConcreteTable(new CSVImporter(in));
 //        in.close();
 
-        Writer out = new FileWriter(FilePath.resourceFilePath + "people");
-        people.export(new XMLExporter(out));
-        out.close();
+        // testing xml exporter & importer
+//        Writer out = new FileWriter(FilePath.resourceFilePath + "people.xml");
+//        people.export(new XMLExporter(out));
+//        out.close();
+//
+//        Reader in = new FileReader(FilePath.resourceFilePath + "people.xml");
+//        people = new ConcreteTable(new XMLImporter(in));
+//        in.close();
 
-        Reader in = new FileReader(FilePath.resourceFilePath + "people");
-        people = new ConcreteTable(new XMLImporter(in));
-        in.close();
+        // testing html exporter
+        Writer out = new FileWriter(FilePath.resourceFilePath + "people.html");
+        people.export(new HTMLExporter(out));
+        out.close();
 
     }
 

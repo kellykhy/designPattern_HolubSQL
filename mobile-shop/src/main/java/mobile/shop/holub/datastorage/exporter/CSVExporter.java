@@ -63,101 +63,42 @@ import mobile.shop.holub.datastorage.table.Table;
  * @see CSVImporter
  */
 
-public class CSVExporter implements Table.Exporter {
+public class CSVExporter implements Table.Exporter
+{	private final Writer out;
+    private 	  int	 width;
 
-    private final Writer out;
-    private int width;
-
-    public CSVExporter(Writer out) {
-        this.out = out;
+    public CSVExporter( Writer out )
+    {	this.out = out;
     }
 
-    public void storeMetadata(String tableName,
-                              int width,
-                              int height,
-                              Iterator columnNames) throws IOException {
-        this.width = width;
-        out.write(tableName == null ? "<anonymous>" : tableName);
+    public void storeMetadata( String tableName,
+                               int width,
+                               int height,
+                               Iterator columnNames ) throws IOException
+
+    {	this.width = width;
+        out.write(tableName == null ? "<anonymous>" : tableName );
         out.write("\n");
-        storeRow(columnNames); // comma separated list of columns ids
+        storeRow( columnNames ); // comma separated list of columns ids
     }
 
-    public void storeRow(Iterator data) throws IOException {
-        int i = width;
-        while (data.hasNext()) {
-            Object datum = data.next();
+    public void storeRow( Iterator data ) throws IOException
+    {	int i = width;
+        while( data.hasNext() )
+        {	Object datum = data.next();
 
             // Null columns are represented by an empty field
             // (two commas in a row). There's nothing to write
             // if the column data is null.
-            if (datum != null) {
-                out.write(datum.toString());
-            }
+            if( datum != null )
+                out.write( datum.toString() );
 
-            if (--i > 0) {
+            if( --i > 0 )
                 out.write(",\t");
-            }
         }
         out.write("\n");
     }
 
     public void startTable() throws IOException {/*nothing to do*/}
-
-    public void endTable() throws IOException {/*nothing to do*/}
-
-    public static class XMLExporter implements Table.Exporter
-    {	private final Writer out;
-        private 	  int	 width;
-        private String tableName;
-
-        private String[] columnNames;
-
-        public XMLExporter( Writer out )
-        {
-            this.out = out;
-        }
-
-        public void storeMetadata( String tableName,
-                                   int width,
-                                   int height,
-                                   Iterator columnNames ) throws IOException
-
-        {
-            this.width = width;
-            this.tableName = tableName;
-            out.write(tableName == null ? "<anonymous>" : tableName );
-            out.write("\n");
-            this.columnNames = new String[width];
-            for (int i = 0; columnNames.hasNext(); i++) {
-                this.columnNames[i] = columnNames.next().toString();
-            }
-        }
-
-        public void storeRow( Iterator data ) throws IOException
-        {
-            int idx = 0;
-            out.write("\t<row>\n");
-            while (data.hasNext())
-            {
-                Object datum = data.next();
-                if( datum != null ) {
-                    out.write("\t\t<" + columnNames[idx] + ">");
-                    out.write(datum.toString());
-                    out.write("</" + columnNames[idx] + ">");
-                } else {
-                    out.write("\t\t<" + columnNames[idx] + ">");
-                    out.write("</" + columnNames[idx] + ">");
-                }
-
-                out.write("\n");
-                if (idx < width) {
-                    idx += 1;
-                }
-            }
-            out.write("\t</row>\n");
-        }
-
-        public void startTable() throws IOException {out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");}
-        public void endTable()   throws IOException {out.write("</" + this.tableName + ">");}
-    }
+    public void endTable()   throws IOException {/*nothing to do*/}
 }
