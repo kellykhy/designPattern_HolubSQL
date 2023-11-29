@@ -1,4 +1,4 @@
-package mobile.shop.holub.sqlengine.expression.enums;
+package mobile.shop.holub.sqlengine.enums;
 
 import mobile.shop.holub.sqlengine.text.Token;
 
@@ -16,6 +16,7 @@ public enum TokenType {
     COMMIT(Token.create("'COMMIT")),
     CREATE(Token.create("'CREATE")),
     DATABASE(Token.create("'DATABASE")),
+    INDEX(Token.create("'INDEX")),
     DELETE(Token.create("'DELETE")),
     DROP(Token.create("'DROP")),
     DUMP(Token.create("'DUMP")),

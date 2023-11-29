@@ -1,10 +1,10 @@
 package mobile.shop.holub.sqlengine.expression;
 
 
-import static mobile.shop.holub.sqlengine.expression.enums.MathOperator.*;
+import static mobile.shop.holub.sqlengine.enums.MathOperator.*;
 
 import mobile.shop.holub.datastorage.Cursor;
-import mobile.shop.holub.sqlengine.expression.enums.MathOperator;
+import mobile.shop.holub.sqlengine.enums.MathOperator;
 import mobile.shop.holub.sqlengine.expressionvisitor.Visitor;
 import mobile.shop.holub.sqlengine.text.ParseFailure;
 import mobile.shop.holub.sqlengine.value.NumericValue;

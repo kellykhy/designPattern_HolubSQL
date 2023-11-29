@@ -303,4 +303,6 @@ public interface Table extends Serializable, Cloneable {
 
         void endTable() throws IOException;
     }
+
+    public String toJson();
 }

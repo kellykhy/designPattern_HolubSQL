@@ -4,10 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.File;
 import java.text.ParseException;
-import mobile.shop.holub.sqlengine.value.ValueFactory;
-import mobile.shop.holub.tools.FilePath;
 import org.junit.jupiter.api.Test;
 
 public class ValueTest {
@@ -17,7 +14,7 @@ public class ValueTest {
     String dummyColumnName = "dummy column name";
 
     @Test
-    void BooleanValue() {
+    void testGetBooleanValue() {
         assertTrue(ValueFactory.getBooleanValue(true).getBooleanValue());
 
         assertThrows(UnsupportedOperationException.class, () -> {
@@ -38,7 +35,7 @@ public class ValueTest {
     }
 
     @Test
-    void testNumericValue() throws ParseException {
+    void testGetNumericValue() throws ParseException {
         assertEquals(3, ValueFactory.getNumericValue(3).getNumericValue());
         assertEquals(3, ValueFactory.getNumericValue("3").getNumericValue());
 
@@ -61,7 +58,7 @@ public class ValueTest {
 
 
     @Test
-    void testStringValue() {
+    void testGetStringValue() {
         assertEquals("design pattern", ValueFactory.getStringValue("design pattern").getStringValue());
 
         assertThrows(UnsupportedOperationException.class, () -> {
@@ -80,6 +77,6 @@ public class ValueTest {
             ValueFactory.getIdValue(dummyTableName, dummyColumnName).getStringValue();
         });
     }
-    
+
 
 }
