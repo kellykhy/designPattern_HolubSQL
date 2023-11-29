@@ -26,26 +26,14 @@
  */
 package mobile.shop.holub.datastorage.table;
 
-import java.util.Arrays;
-import mobile.shop.holub.datastorage.Cursor;
-import mobile.shop.holub.datastorage.Selector;
-import mobile.shop.holub.datastorage.exporter.CSVExporter;
-import mobile.shop.holub.datastorage.importer.CSVImporter;
-import mobile.shop.holub.tools.ArrayIterator;
-import mobile.shop.holub.tools.FilePath;
-
-
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
+import mobile.shop.holub.datastorage.Cursor;
+import mobile.shop.holub.datastorage.Selector;
+import mobile.shop.holub.tools.ArrayIterator;
 
 /**
  * A concrete implementation of the {@link Table} interface that implements an in-memory table. Most of the methods of
@@ -431,12 +419,6 @@ import java.util.Map;
         Table[] allTables = new Table[otherTables.length + 1];
         allTables[0] = this;
         System.arraycopy(otherTables, 0, allTables, 1, otherTables.length);
-
-        // solve join with "select *"
-        if (requestedColumns == null) {
-            requestedColumns = columnNames;
-        }
-        //
 
         Table resultTable = new ConcreteTable(null, requestedColumns);
         Cursor[] envelope = new Cursor[allTables.length];

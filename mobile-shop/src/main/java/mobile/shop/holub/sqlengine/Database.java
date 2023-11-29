@@ -89,6 +89,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -106,8 +107,6 @@ import mobile.shop.holub.sqlengine.enums.RelationalOperator;
 import mobile.shop.holub.sqlengine.expression.Expression;
 import mobile.shop.holub.sqlengine.expression.ExpressionFactory;
 import mobile.shop.holub.sqlengine.expressionvisitor.IndexCheckVisitor;
-import mobile.shop.holub.sqlengine.expressionvisitor.PrintVisitor;
-import mobile.shop.holub.sqlengine.expressionvisitor.Visitor;
 import mobile.shop.holub.sqlengine.text.ParseFailure;
 import mobile.shop.holub.sqlengine.text.Scanner;
 import mobile.shop.holub.sqlengine.value.Value;
@@ -117,9 +116,7 @@ import mobile.shop.holub.tools.ThrowableContainer;
 
 
 public final class Database {
-
-
-    private Map<String, HashIndex> indices = new HashMap<>();
+    private final Map<String, HashIndex> indices = new HashMap<>();
 
     private final Map tables = new TableMap(new HashMap());
     private File location = new File(FilePath.resourceFilePath);
@@ -356,9 +353,7 @@ public final class Database {
                 in.advance();
                 String column = in.required(IDENTIFIER);
                 createIndex(tableName, column);
-//                System.exit(0);
-            } else // must be CREATE TABLE
-            {
+            } else {
                 in.required(TABLE);
                 String tableName = in.required(IDENTIFIER);
                 in.required(LP);
@@ -431,11 +426,11 @@ public final class Database {
             Expression where = (in.matchAdvance(WHERE) == null)
                     ? null : expr();
 
-            Visitor visitor = new PrintVisitor();
-            if (where != null) {
-                where.accept(visitor);
-                System.out.println();
-            }
+//            Visitor visitor = new PrintVisitor();
+//            if (where != null) {
+//                where.accept(visitor);
+//                System.out.println();
+//            }
 
             Table result = applyIndex(requestedTableNames, where);
 
@@ -704,6 +699,20 @@ public final class Database {
 
         assert tableNames.hasNext() : "No tables to use in select!";
 
+        if (columns == null) {
+            columns = new ArrayList<String>();
+            for (Object requestedTableName : requestedTableNames) {
+                String tableName = (String) requestedTableName;
+                Table table = (Table) tables.get(tableName);
+                Cursor cursor = table.rows();
+
+                for (int i = 0; i < cursor.columnCount(); i++) {
+                    columns.add(cursor.columnName(i));
+                }
+
+            }
+        }
+
         // The primary table is the first one listed in the
         // FROM clause. The participantsInJoin are the other
         // tables listed in the FROM clause. We're passed in the
@@ -866,16 +875,26 @@ public final class Database {
         return null;
     }
 
-    private void createIndex(String tableName, String columnName) throws IOException, ParseFailure {
-        HashIndex hashIndex = new HashIndex(columnName);
+
+    private void createIndex(String tableName, String columnName)
+            throws IOException, ParseFailure {
 
         Table indexedTable = (Table) tables.get(tableName);
         Cursor cursor = indexedTable.rows();
+
+        HashIndex hashIndex = new HashIndex(columnName);
+        Set<String> indexedValues = new HashSet<>();
         while (cursor.advance()) {
-            Object value = cursor.column(columnName);
-            String query = "select * from " + tableName + " where " + columnName + " = " + value.toString();
-            Table subTable = execute(query);
-            hashIndex.addSubTable(value.toString(), subTable);
+            String value = cursor.column(columnName).toString();
+
+            if (!indexedValues.contains(value)) {
+                String query = "select * from "
+                        + tableName + " where "
+                        + columnName + " = " + value;
+                Table subTable = execute(query);
+                hashIndex.addSubTable(value, subTable);
+                indexedValues.add(value);
+            }
         }
         indices.put(tableName, hashIndex);
     }
