@@ -34,7 +34,7 @@ import mobile.shop.holub.datastorage.table.Table;
 
 public class XMLExporter implements Table.Exporter
 {	private final Writer out;
-	private 	  int	 width;
+	private int	 width;
 	private String tableName;
 	
 	private String[] columnNames;
@@ -44,6 +44,7 @@ public class XMLExporter implements Table.Exporter
 		this.out = out;
 	}
 
+	public void startTable() throws IOException {out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");}
 	public void storeMetadata( String tableName,
 							   int width,
 							   int height,
@@ -83,7 +84,5 @@ public class XMLExporter implements Table.Exporter
         }
         out.write("\t</row>\n");
 	}
-
-	public void startTable() throws IOException {out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");}
 	public void endTable()   throws IOException {out.write("</" + this.tableName + ">");}
 }

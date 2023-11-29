@@ -43,7 +43,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class XMLImporter implements Table.Importer
 {	
-	private Reader in;
+	private final Reader in;
 	private Element root;
 	private int currentRow;
 
@@ -52,7 +52,7 @@ public class XMLImporter implements Table.Importer
 		this.in = in;
         this.currentRow = -1;
 	}
-	public void startTable()			throws IOException
+	public void startTable() throws IOException
 	{
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -77,22 +77,22 @@ public class XMLImporter implements Table.Importer
         }
         return i;
 	}
-	public Iterator loadColumnNames()	throws IOException
+	public Iterator loadColumnNames() throws IOException
 	{	
-		ArrayList columns = new ArrayList<String>();
+		ArrayList<String> columns = new ArrayList<String>();
         for (int i = 0; i < root.getChildNodes().item(1).getChildNodes().getLength(); i++) {
             Node node = root.getChildNodes().item(1).getChildNodes().item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element childElement = (Element) node;
                 String tagName = childElement.getTagName();
-                if(!tagName.trim().equals(""))
+                if(!tagName.trim().isEmpty())
                     columns.add(tagName);
             }
         }
         return new ArrayIterator(columns.toArray());
 	}
 
-	public Iterator loadRow()			throws IOException
+	public Iterator loadRow() throws IOException
 	{	
 		currentRow += 1;
         if (currentRow >= root.getChildNodes().getLength()-1) {
@@ -107,7 +107,7 @@ public class XMLImporter implements Table.Importer
                 return null;
         }
 
-        ArrayList row = new ArrayList<String>();
+        ArrayList<String> row = new ArrayList<String>();
         for(int i=0; i < rowNode.getChildNodes().getLength(); i++) {
             Node node = rowNode.getChildNodes().item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
