@@ -69,7 +69,7 @@ import mobile.shop.holub.tools.FilePath;
 public class Console {
 
     //    mobile.shop.holub.database.jdbc.JDBCDriver;
-    private static final String driverName = "mobile.shop.holub.database.jdbc.JDBCDriver";
+    private static final String driverName = "mobile.shop.holub.jdbc.JDBCDriver";
     //----------------------------------------------------------------------
     private static final GridBagConstraints constraint =
             new GridBagConstraints
