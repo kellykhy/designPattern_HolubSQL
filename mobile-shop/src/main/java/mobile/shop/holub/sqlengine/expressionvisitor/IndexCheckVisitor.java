@@ -14,7 +14,6 @@ public class IndexCheckVisitor implements Visitor {
     private Table subTable;
     private boolean isIndexed;
 
-
     public IndexCheckVisitor(HashIndex hashIndex) {
         this.hashIndex = hashIndex;
         subTable = null;
@@ -23,7 +22,6 @@ public class IndexCheckVisitor implements Visitor {
 
     @Override
     public void visit(RelationalExpression relationalExpression) {
-
         if (relationalExpression.isEqualOperation()) {
             relationalExpression.visitLeftOperand(this);
         }
@@ -35,9 +33,7 @@ public class IndexCheckVisitor implements Visitor {
 
     @Override
     public void visit(AtomicExpression atomicExpression) {
-
         String columnName = atomicExpression.getColumnName();
-
         if (columnName != null) {
             isIndexed = hashIndex.isIndexedColumn(columnName);
         }
