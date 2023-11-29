@@ -13,39 +13,40 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class RestaurantController {
-    Database database = new Database();
+    Database database;
+
+    public RestaurantController() throws IOException, ParseFailure {
+        database = initDatabase();
+    }
 
     @GetMapping("/restaurants")
     public String getRestaurant() throws IOException, ParseFailure {
+        String query = "SELECT * FROM restaurant";
+        Table table = database.execute(query);
+
+        return table.toJson();
+    }
+
+    private Database initDatabase() throws IOException, ParseFailure {
+        Database database = new Database();
 
         BufferedReader sql = new BufferedReader(
                 new FileReader(FilePath.resourceFilePath + "createQuery.sql"));
 
-        String test;
-
-        String jsonString = null;
-        while ((test = sql.readLine()) != null) {
-            test = test.trim();
-            if (test.isEmpty()) {
+        String line;
+        while ((line = sql.readLine()) != null) {
+            line = line.trim();
+            if (line.isEmpty()) {
                 continue;
             }
 
-            while (test.endsWith("\\")) {
-                test = test.substring(0, test.length() - 1);
-                test += sql.readLine().trim();
+            while (line.endsWith("\\")) {
+                line = line.substring(0, line.length() - 1);
+                line += sql.readLine().trim();
             }
 
-            System.out.println("Parsing: " + test);
-            Table result = database.execute(test);
-
-            if (result != null)    // it was a SELECT of some sort
-            {
-                jsonString = result.toJson();
-            }
         }
-        database.dump();
-
-        return jsonString;
-
+        database.execute("CREATE INDEX menu ON restaurant_id");
+        return database;
     }
 }
