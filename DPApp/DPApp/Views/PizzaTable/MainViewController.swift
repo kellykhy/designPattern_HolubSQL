@@ -13,7 +13,6 @@ import Alamofire
 
 class MainViewController: UIViewController {
     
-    private var restaurantInfo = RestaurantInfo()
     private var restaurants: [Restaurant] = []
     private var selectedRestaurantId: String?
     
@@ -36,7 +35,7 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         makeConstraints()
-   //     fetchRestaurant()
+        fetchRestaurant()
     }
     
     private func makeConstraints(){
@@ -72,7 +71,7 @@ class MainViewController: UIViewController {
         AF.request("http://localhost:8080/restaurants").responseDecodable(of: RestaurantResponse.self) { response in
             switch response.result {
             case.success(let data):
-                self.restaurants = data.recodrs
+                self.restaurants = data.records
                 DispatchQueue.main.async {
                     self.pizzatable.reloadData()
                 }
@@ -85,16 +84,14 @@ class MainViewController: UIViewController {
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-      //  return restaurants.count
-        return restaurantInfo.restaurantInfo.count
+        return restaurants.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: PizzaTableCell.identifier, for: indexPath) as? PizzaTableCell else { return UITableViewCell() }
         
-  //      let restaurant = restaurants[indexPath.row]
-     //   cell.configure(restaurant.name)
-        cell.modelConfigure(restaurantInfo.restaurantInfo[indexPath.row])
+        let restaurant = restaurants[indexPath.row]
+        cell.configure(restaurant.name)
         
         return cell
     }
@@ -104,9 +101,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    //    let selectedRestaurant = restaurants[indexPath.row]
-     //   selectedRestaurantId = selectedRestaurant.id
-     //   fetchMenu()
+ 
         
         let swiftUIView = ContentView(viewModel: OrderViewModel())
         let hostingController = UIHostingController(rootView: swiftUIView)

@@ -13,7 +13,6 @@ import SwiftUI
 struct NextCartView: View {
     @State var isViewActive = true
     
-//    var selectedItems: [MenuItm]
     
     var selectedRadioMenu: [RadioMenu]
     var selectedMenus: [Menu]
@@ -100,94 +99,3 @@ struct NextCartView: View {
         
     }
 }
-/*
-
-
-import SwiftUI
-
-
-struct NextCartView: View {
-    @State var isViewActive = true
-    
-    var selectedItems: [MenuItem]
-
-    // 총 가격과 아이템 수 계산
-    var totalPrice: Int {
-        selectedItems.reduce(0) { total, item in
-            total + (Int(item.price) ?? 0)
-        }
-    }
-
-    var count: Int {
-        selectedItems.count
-    }
-    
-    var body: some View {
-        VStack {
-            if isViewActive {
-                HStack {
-                    Text("도미노 피자")
-                    Spacer()
-                    Image(systemName: "xmark")
-                        .onTapGesture {
-                            self.isViewActive = false
-                        }
-                }
-                .padding(.horizontal)
-                .padding(.top, 10)
-
-                VStack {
-                    HStack {
-                        Image("foodImage")
-                            .resizable()
-                            .frame(width: 80, height: 80)
-                        Spacer(minLength: 10)
-                        VStack(alignment: .leading) {
-                            Text("・ 선택한 메뉴: \(selectedItems.map { "\($0.name) (\($0.price)원)" }.joined(separator: " / "))")
-                                .font(.system(size: 15, weight: .regular))
-                                .tint(Color("customGray1"))
-                                .multilineTextAlignment(.leading)
-                                .lineLimit(nil)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-
-                            Text("\(totalPrice)원")
-                        }
-                    }
-                    Spacer()
-
-                    HStack {
-                        Spacer()
-                        RoundedRectangle(cornerRadius: 5)
-                            .stroke(Color.gray, lineWidth: 1)
-                            .frame(width: 60, height: 30)
-                            .overlay(
-                                Text("옵션변경")
-                                    .font(Font.system(size: 12))
-                                    .fontWeight(.light)
-                                    .foregroundColor(.gray)
-                            )
-                            .onTapGesture {
-                                // 옵션 변경 로직
-                            }
-
-                        RoundedRectangle(cornerRadius: 5)
-                            .stroke(Color.gray, lineWidth: 1)
-                            .frame(width: 65, height: 30)
-                            .overlay(
-                                Text("-  \(count)  +")
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.gray)
-                            )
-                            .onTapGesture {
-                                // 수량 변경 로직
-                            }
-                    }
-                }
-                .padding(EdgeInsets(top: 5, leading: 5, bottom: 10, trailing: 10))
-            }
-        }
-        .background(Color.white)
-    }
-}
-
-*/
