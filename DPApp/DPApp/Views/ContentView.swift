@@ -65,7 +65,7 @@ struct ContentView: View {
                             Spacer(minLength: 10)
                             
                             Section(header: Text("")){
-                                Text(" 도미노 피자 ")
+                                Text(" [열혈 시그니처] 열혈타코 오리지널 ")
                                     .font(.system(size: 23,weight: .bold))
                                     .padding(.leading,10)
                                 Spacer(minLength: 10)
@@ -99,7 +99,7 @@ struct ContentView: View {
                         }
                         
                         Section(header: Text("")) {
-                            Text("도우 선택").font(.headline)
+                            Text("소스 추가선택").font(.headline)
                       
                             ForEach(viewModel.menus.indices, id: \.self) { index in
                                 if viewModel.menus[index].id <= 9{
@@ -118,8 +118,32 @@ struct ContentView: View {
                                 }
                             }.listRowSeparator(.hidden)
                         }
+                        
                         Section(header: Text("")) {
-                            Text("사이드 디시").font(.headline)
+                            Text("음료 추가선택").font(.headline)
+                                .listRowSeparator(.hidden)
+
+                            Text("최대 2개 선택")
+                                .font(Font.system(size: 13))
+                                .tint(Color("customGray"))
+                            ForEach(viewModel.menus.indices,id: \.self) {index in
+                                if viewModel.menus[index].id <= 11 && viewModel.menus[index].id > 9 {
+                                    CheckBoxView( title: viewModel.menus[index].name,
+                                                  price: viewModel.menus[index].price,
+                                                  isChecked: Binding(
+                                                    get: { viewModel.menus[index].isChecked },
+                                                    set: {
+                                                        viewModel.menus[index].isChecked = $0
+                                                        viewModel.updateTotals()
+                                                    })
+                                    )
+                                    
+                                }
+                            }.listRowSeparator(.hidden)
+                            
+                        }
+                        Section(header: Text("")) {
+                            Text("사이드 추가선택").font(.headline)
                             ForEach(viewModel.menus.indices,id: \.self) {index in
                                 if viewModel.menus[index].id <= 19 && viewModel.menus[index].id > 11{
                                     CheckBoxView( title: viewModel.menus[index].name,

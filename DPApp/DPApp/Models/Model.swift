@@ -8,6 +8,24 @@
 import Foundation
 import SwiftUI
 
+struct MenuResponse: Codable {
+    var tableName: String
+    var records: [MenuItem]
+}
+
+struct MenuItem: Codable {
+    var id: String
+    var restaurantId: String
+    var name: String
+    var type: String
+    var price: String
+
+    enum CodingKeys: String, CodingKey {
+        case id, name, type, price
+        case restaurantId = "restaurant_id"
+    }
+}
+
 struct RadioMenu {
     var id: Int
     var name: String

@@ -4,7 +4,7 @@ import SwiftUI
 struct DPAppApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView(viewModel: OrderViewModel())
+            MainViewControllerRepresentable()
         }
     }
 }
