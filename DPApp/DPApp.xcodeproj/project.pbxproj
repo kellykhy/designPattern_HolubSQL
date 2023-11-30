@@ -15,6 +15,13 @@
 		480757612B164BE6000AFEFC /* MenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480757602B164BE6000AFEFC /* MenuViewModel.swift */; };
 		480757642B164C81000AFEFC /* NextCartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480757632B164C81000AFEFC /* NextCartView.swift */; };
 		480757662B164D0D000AFEFC /* NextPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480757652B164D0D000AFEFC /* NextPageView.swift */; };
+		480EE5B02B17147B00975217 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480EE5AF2B17147B00975217 /* MainViewController.swift */; };
+		480EE5B22B17156F00975217 /* PizzaTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480EE5B12B17156F00975217 /* PizzaTableCell.swift */; };
+		480EE5B72B1716B300975217 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 480EE5B62B1716B300975217 /* SnapKit */; };
+		480EE5B92B1716B300975217 /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 480EE5B82B1716B300975217 /* SnapKit-Dynamic */; };
+		48A39C922B1718DA0087E8D0 /* ShopModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A39C912B1718DA0087E8D0 /* ShopModel.swift */; };
+		48D1E9462B179D4900B3FC34 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 48D1E9452B179D4900B3FC34 /* Alamofire */; };
+		48D1E9492B17A5FB00B3FC34 /* MenuManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D1E9482B17A5FB00B3FC34 /* MenuManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +34,11 @@
 		480757602B164BE6000AFEFC /* MenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewModel.swift; sourceTree = "<group>"; };
 		480757632B164C81000AFEFC /* NextCartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextCartView.swift; sourceTree = "<group>"; };
 		480757652B164D0D000AFEFC /* NextPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextPageView.swift; sourceTree = "<group>"; };
+		480EE5AF2B17147B00975217 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		480EE5B12B17156F00975217 /* PizzaTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaTableCell.swift; sourceTree = "<group>"; };
+		48A39C912B1718DA0087E8D0 /* ShopModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopModel.swift; sourceTree = "<group>"; };
+		48D1E9472B179F0300B3FC34 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		48D1E9482B17A5FB00B3FC34 /* MenuManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,6 +46,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48D1E9462B179D4900B3FC34 /* Alamofire in Frameworks */,
+				480EE5B72B1716B300975217 /* SnapKit in Frameworks */,
+				480EE5B92B1716B300975217 /* SnapKit-Dynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +74,7 @@
 		480757382B164790000AFEFC /* DPApp */ = {
 			isa = PBXGroup;
 			children = (
+				48D1E9472B179F0300B3FC34 /* Info.plist */,
 				480757622B164C70000AFEFC /* Views */,
 				4807575F2B164BD3000AFEFC /* ViewModel */,
 				4807575C2B164850000AFEFC /* Models */,
@@ -96,11 +112,23 @@
 		480757622B164C70000AFEFC /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				480EE5AE2B17143700975217 /* PizzaTable */,
 				480757632B164C81000AFEFC /* NextCartView.swift */,
 				480757652B164D0D000AFEFC /* NextPageView.swift */,
 				4807573B2B164790000AFEFC /* ContentView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		480EE5AE2B17143700975217 /* PizzaTable */ = {
+			isa = PBXGroup;
+			children = (
+				480EE5AF2B17147B00975217 /* MainViewController.swift */,
+				480EE5B12B17156F00975217 /* PizzaTableCell.swift */,
+				48A39C912B1718DA0087E8D0 /* ShopModel.swift */,
+				48D1E9482B17A5FB00B3FC34 /* MenuManager.swift */,
+			);
+			path = PizzaTable;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -120,6 +148,9 @@
 			);
 			name = DPApp;
 			packageProductDependencies = (
+				480EE5B62B1716B300975217 /* SnapKit */,
+				480EE5B82B1716B300975217 /* SnapKit-Dynamic */,
+				48D1E9452B179D4900B3FC34 /* Alamofire */,
 			);
 			productName = DPApp;
 			productReference = 480757362B164790000AFEFC /* DPApp.app */;
@@ -150,6 +181,8 @@
 			);
 			mainGroup = 4807572D2B164790000AFEFC;
 			packageReferences = (
+				480EE5B52B1716B300975217 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				48D1E9442B179D4900B3FC34 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = 480757372B164790000AFEFC /* Products */;
 			projectDirPath = "";
@@ -177,10 +210,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48D1E9492B17A5FB00B3FC34 /* MenuManager.swift in Sources */,
+				480EE5B02B17147B00975217 /* MainViewController.swift in Sources */,
 				4807575E2B16485E000AFEFC /* Model.swift in Sources */,
 				4807573C2B164790000AFEFC /* ContentView.swift in Sources */,
 				480757662B164D0D000AFEFC /* NextPageView.swift in Sources */,
 				480757642B164C81000AFEFC /* NextCartView.swift in Sources */,
+				48A39C922B1718DA0087E8D0 /* ShopModel.swift in Sources */,
+				480EE5B22B17156F00975217 /* PizzaTableCell.swift in Sources */,
 				4807573A2B164790000AFEFC /* DPAppApp.swift in Sources */,
 				480757612B164BE6000AFEFC /* MenuViewModel.swift in Sources */,
 			);
@@ -318,6 +355,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"DPApp/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DPApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -346,6 +384,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"DPApp/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DPApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -386,6 +425,43 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		480EE5B52B1716B300975217 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.6.0;
+			};
+		};
+		48D1E9442B179D4900B3FC34 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.8.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		480EE5B62B1716B300975217 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 480EE5B52B1716B300975217 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		480EE5B82B1716B300975217 /* SnapKit-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 480EE5B52B1716B300975217 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = "SnapKit-Dynamic";
+		};
+		48D1E9452B179D4900B3FC34 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 48D1E9442B179D4900B3FC34 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4807572E2B164790000AFEFC /* Project object */;
 }
