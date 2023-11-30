@@ -1,7 +1,7 @@
 package mobile.shop.holub.tools;
 
 public class FilePath {
-    public static String resourceFilePath = "c:\\dp2023";
+    public static String resourceFilePath = "c:\\dp2023\\";
     public static String dbPath;
 
     static {
