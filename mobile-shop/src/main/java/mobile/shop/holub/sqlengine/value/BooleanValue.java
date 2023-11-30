@@ -16,12 +16,4 @@ public class BooleanValue extends Value {
     public boolean getBooleanValue() {
         return value;
     }
-
-//    @Override
-//    public double getNumericValue() {
-//        if (value) {
-//            return 1;
-//        }
-//        return 0;
-//    }
 }

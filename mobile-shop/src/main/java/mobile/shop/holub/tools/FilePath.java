@@ -8,7 +8,11 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 public class FilePath {
+<<<<<<< HEAD
     public static String resourceFilePath;
+=======
+    public static String resourceFilePath = "c:\\dp2023\\";
+>>>>>>> 42b6229ef265628eff064034ad0f2afdc745b3d2
     public static String dbPath;
 
     static {
