@@ -198,27 +198,27 @@ class ConcreteTableTest {
         // "people" table will
         // fail if this operation fails.
 
-//        Writer out = new FileWriter(FilePath.resourceFilePath + "people");
-//        people.export(new CSVExporter(out));
-//        out.close();
-//
-//        Reader in = new FileReader(FilePath.resourceFilePath + "people");
-//        people = new ConcreteTable(new CSVImporter(in));
-//        in.close();
-
-        // testing xml exporter & importer
-//        Writer out = new FileWriter(FilePath.resourceFilePath + "people.xml");
-//        people.export(new XMLExporter(out));
-//        out.close();
-//
-//        Reader in = new FileReader(FilePath.resourceFilePath + "people.xml");
-//        people = new ConcreteTable(new XMLImporter(in));
-//        in.close();
-
-        // testing html exporter
-        Writer out = new FileWriter(FilePath.resourceFilePath + "people.html");
-        people.export(new HTMLExporter(out));
+        Writer out = new FileWriter(FilePath.resourceFilePath + "people");
+        people.export(new CSVExporter(out));
         out.close();
+
+        Reader in = new FileReader(FilePath.resourceFilePath + "people");
+        people = new ConcreteTable(new CSVImporter(in));
+        in.close();
+
+//        //testing xml exporter & importer
+//        Writer out_xml = new FileWriter(FilePath.resourceFilePath + "people.xml");
+//        people.export(new XMLExporter(out_xml));
+//        out_xml.close();
+//
+//        Reader in_xml = new FileReader(FilePath.resourceFilePath + "people.xml");
+//        people = new ConcreteTable(new XMLImporter(in_xml));
+//        in_xml.close();
+//
+//        // testing html exporter
+//        Writer out_html = new FileWriter(FilePath.resourceFilePath + "people.html");
+//        people.export(new HTMLExporter(out_html));
+//        out_html.close();
 
     }
 
